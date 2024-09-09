@@ -1,30 +1,31 @@
 <HEAD>
   <title>
-    HELLO
+    WELCOME
   </title>
 </HEAD>
 <BODY>
   <center>
-    <h1>|WELCOME|</h1>
+    <h1>WELCOME</h1>
     <h1 id="face">😈</h1>
+    <label for="delayInput">Set Delay (ms):</label>
     <input type="number" id="delayInput" value="500" min="100" step="100">
   </center>
   <script>
-    // Face changing logic
-    var face = document.getElementById("face");
-    var is_first_face = true;
-    
-    function change_face(){
-      if (is_first_face){
-        face.textContent= "😇";
-      }else{
-        face.textContent = "😈";
-      }
-      is_first_face = !is_first_face;
-    }
-    setInterval(change_face, 150);
+    // Array of emojis to be displayed
+    const emojis = ["😈", "😇", "💡", "🎉", "🤖", "🦄", "🎶", "🍕", "💻", "💘", "♎", "🍣", "🎥", "🐈", "🍦", "⛄", "👨‍👩‍👦‍👦", "🚗", "🧠"];
 
-    // Function to generate random color
+    // Get the face element by its ID
+    var face = document.getElementById("face");
+    var colorIntervalId;
+    var emojiIntervalId;
+
+    // Function to change face to a random emoji
+    function change_face() {
+      const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+      face.textContent = randomEmoji;
+    }
+
+    // Function to generate a random hex color
     function getRandomColor() {
       const letters = '0123456789ABCDEF';
       let color = '#';
@@ -34,29 +35,30 @@
       return color;
     }
 
-    // Background color change logic
-    let intervalId;
-    
+    // Function to change background color
     function changeBackgroundColor() {
       document.body.style.backgroundColor = getRandomColor();
     }
 
-    function startColorChange() {
+    // Function to start changing background color and emoji
+    function startChanges() {
       // Get the delay value from the input
       const delay = document.getElementById('delayInput').value;
 
-      // Clear any previous interval
-      clearInterval(intervalId);
+      // Clear any previous intervals
+      clearInterval(colorIntervalId);
+      clearInterval(emojiIntervalId);
 
-      // Set a new interval with the user-specified delay
-      intervalId = setInterval(changeBackgroundColor, delay);
+      // Set new intervals with the user-specified delay
+      colorIntervalId = setInterval(changeBackgroundColor, delay);
+      emojiIntervalId = setInterval(change_face, 150); // Emoji changes every 150ms
     }
 
-    // Start with default delay of 500ms
-    startColorChange();
+    // Initialize with default delay of 500ms
+    startChanges();
 
     // Update delay when the user changes the input
-    document.getElementById('delayInput').addEventListener('input', startColorChange);
+    document.getElementById('delayInput').addEventListener('input', startChanges);
 
   </script>
 </BODY>
