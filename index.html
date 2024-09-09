@@ -5,37 +5,59 @@
 </HEAD>
 <BODY>
   <center>
-  <h1>WELCOME</h1>
+    <h1>WELCOME</h1>
     <h1 id="face">(●_●)</h1>
+    <label for="delayInput">Set Background Change Delay (ms): </label>
+    <input type="number" id="delayInput" value="500" min="100" step="100">
   </center>
   <script>
+    // Face changing logic
     var face = document.getElementById("face");
     var is_first_face = true;
+    
     function change_face(){
       if (is_first_face){
-        face.textContent= "/ (○_○) /";
+        face.textContent= "\\ (○_○) /";
       }else{
-        face.textContent = "\\(●_●)\\";
+        face.textContent = "/ (●_●)\\";
       }
       is_first_face = !is_first_face;
     }
-    setInterval(change_face,150);
+    setInterval(change_face, 150);
+
+    // Function to generate random color
     function getRandomColor() {
-            // Generate a random hex color
-            const letters = '0123456789ABCDEF';
-            let color = '#';
-            for (let i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        }
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
 
-        function changeBackgroundColor() {
-            // Get a random color and set it as the background color
-            document.body.style.backgroundColor = getRandomColor();
-        }
+    // Background color change logic
+    let intervalId;
+    
+    function changeBackgroundColor() {
+      document.body.style.backgroundColor = getRandomColor();
+    }
 
-        // Change the background color every 500 milliseconds (0.5 seconds)
-        setInterval(changeBackgroundColor, 500);
+    function startColorChange() {
+      // Get the delay value from the input
+      const delay = document.getElementById('delayInput').value;
+
+      // Clear any previous interval
+      clearInterval(intervalId);
+
+      // Set a new interval with the user-specified delay
+      intervalId = setInterval(changeBackgroundColor, delay);
+    }
+
+    // Start with default delay of 500ms
+    startColorChange();
+
+    // Update delay when the user changes the input
+    document.getElementById('delayInput').addEventListener('input', startColorChange);
+
   </script>
 </BODY>
